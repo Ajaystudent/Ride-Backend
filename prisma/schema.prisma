@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = "postgresql://postgres:123456@localhost:5432/mydatabase?schema=public"
+}
+
+model User {
+  id           Int     @id @default(autoincrement())
+  mobileNumber String?
+  userName     String?
+  userType     String?
+  otp          String?
+  is_active    Boolean @default(true)
+  is_deleted   Boolean @default(false)
+  created_at   DateTime @default(now())
+}
+
+model cityLocation {
+  id         Int     @id @default(autoincrement())
+  cityName   String?
+  latitude   String?
+  longitude  String?
+  is_active  Boolean @default(true)
+  is_deleted Boolean @default(false)
+  created_at   DateTime @default(now())
+}
