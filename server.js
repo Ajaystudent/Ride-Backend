@@ -1,18 +1,15 @@
 import express from "express";
-import session from "express-session";
-import { PrismaSessionStore } from "@quixo3/prisma-session-store";
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import dotenv from "dotenv";
-import path from "path";
-const __dirname = path.resolve();
 import cors from "cors";
-import apis from "../Ride/controller/index.js"
+import apis from "../Ride-Backend/controller/index.js"
 import bodyParser from "body-parser";
 
 const app = express();
 
-const PORT = 3008;
+const PORT = process.env.PORT || 3008;
+
 
 const corsOptions = {
     origin: "*",
