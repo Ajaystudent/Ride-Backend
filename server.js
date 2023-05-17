@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 import dotenv from "dotenv";
 import cors from "cors";
-import apis from "../Ride-Backend/controller/index.js"
+import apis from "./controller/index.js"
 import bodyParser from "body-parser";
 
 const app = express();
