@@ -50,5 +50,43 @@ const fcmNotification = async (req, res) => {
     }
 };
 
+const sendNotification = async (req, res) => {
+    try {
+        const { city, msgBody } = req.body;
+        const driver = await prisma.driver.findMany({
+            where: {
+                city
+            }
+        })
+        console.log(driver)
+        for(let i = 0; i< driver.length; i++){
+        const serverKey = "AAAAcGbghqQ:APA91bFiAOuSXhgdBCeabJMGceOGk6D-ElOmDfMpWy6SAIGDu3rPdUI4jdnOVXaQhigRq7_oBmda0PJjzQKyoDequQ9GXmngHu8oVkSeEViZNUjYE9BvnTHNlJIuGflOC-n6xRnSiWfA";
+        const fcm = new FCM(serverKey);
+        const message = {
+            to: driver[i].deviceId,
+            collapse_key: "Test",
+            notification: {
+                title: `Ride`,
+                body: msgBody,
+            },
+            data: {
+                message: msgBody,
+            },
+        };
+        fcm.send(message, function (err, response) {
+            if (err) {
+                console.log("Something has gone wrong!", err);
+            } else {
+                console.log("Successfully sent with response: ", response);
+            }
+        });
+    }
+        res.status(200).json({ message: 'Successfully sent with response', data: msgBody });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+};
 
-export { fcmNotification }
+
+export { fcmNotification, sendNotification }

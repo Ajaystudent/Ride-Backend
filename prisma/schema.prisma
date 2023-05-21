@@ -39,6 +39,7 @@ model Driver {
   userType      String?
   otp           String?
   deviceId      String?
+  flag          Boolean  @default(false)
   is_active     Boolean  @default(true)
   is_deleted    Boolean  @default(false)
   created_at    DateTime @default(now())
