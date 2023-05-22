@@ -24,8 +24,7 @@ const imageStorage1 = multer.diskStorage({
 
 const imgUploaderDocument = multer({
     storage: imageStorage1, limits: {
-        files: 5, // Allow up to 2 files to be uploaded at once
-        fileSize: 5242880, // 5 megabytes in bytes
+        files: 5 // 5 megabytes in bytes
     }
 }).fields([{ name: "driverPhoto", maxCount: 1 },
 { name: "driverLicencePic", maxCount: 1 },
@@ -141,4 +140,21 @@ const resendOtpDriver = async (req, res) => {
     }
 }
 
-export { driverLogin, driverRegister, resendOtpDriver, imgUploaderDocument };
+const driverStatus = async (req, res) => {
+    try {
+        const { flag, id } = req.body;
+        const driver = await prisma.driver.updateMany({
+            where: {
+                id
+            },
+            data:{
+                flag
+            }
+        })
+        return res.status(200).json({ message: 'status updated successfully', data: driver });
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+    }
+}
+
+export { driverLogin,driverStatus, driverRegister, resendOtpDriver, imgUploaderDocument };

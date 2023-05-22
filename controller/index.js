@@ -2,7 +2,7 @@ import express from "express";
 const router = express.Router();
 import { UserRegister, userLogin, resendOtp } from "./user.js"
 import { citiesList, cityById, distanceBetweenCities } from "./cityLocation.js";
-import {driverRegister, driverLogin, resendOtpDriver, imgUploaderDocument} from "./driver.js"
+import {driverRegister, driverLogin, resendOtpDriver,driverStatus, imgUploaderDocument} from "./driver.js"
 import { fcmNotification, sendNotification } from "./userNotification.js";
 import auth from "../utils/auth.js";
 
@@ -14,6 +14,8 @@ router.post("/resendOtp", resendOtp)
 router.post("/registerDriver", imgUploaderDocument, driverRegister);
 router.post("/loginDriver", driverLogin);
 router.post("/resendOtpDriver", resendOtpDriver)
+router.post("/driverStatus", driverStatus)
+
 
 router.get("/citiesList", auth, citiesList);
 router.get("/cityById/:id", auth, cityById);
