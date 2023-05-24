@@ -5,12 +5,12 @@ import FCM from "fcm-node";
 
 const fcmNotification = async (req, res) => {
     try {
-        const { id, userType, msgBody } = req.body;
+        const { mobileNumber, userType, msgBody } = req.body;
         let deviceId = "";
         if (userType == "User") {
             const user = await prisma.user.findFirst({
                 where: {
-                    id
+                    mobileNumber
                 }
             })
             deviceId = user.deviceId;
@@ -18,7 +18,7 @@ const fcmNotification = async (req, res) => {
         if (userType == "Driver") {
             const driver = await prisma.driver.findFirst({
                 where: {
-                    id
+                    mobileNumber
                 }
             })
             deviceId = driver.deviceId;

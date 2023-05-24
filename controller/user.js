@@ -17,6 +17,14 @@ const UserRegister = async (req, res) => {
     const { userName, mobileNumber, userType } = req.body;
 
     try {
+        const mob = await prisma.user.findFirst({
+            where: {
+                mobileNumber
+            }
+        })
+        if (mob) {
+            return res.status(404).send("User already registered");
+        }
         const otp = generateOTP();
 
         const newUser = await prisma.user.create({
@@ -61,10 +69,10 @@ const userLogin = async (req, res) => {
             { expiresIn: '24h' }
         );
         const userDevice = await prisma.user.updateMany({
-            data:{
+            data: {
                 deviceId
             },
-            where:{
+            where: {
                 mobileNumber
             }
         })
@@ -112,7 +120,7 @@ const resendOtp = async (req, res) => {
                 otp,
             },
             where: {
-                id:user.id
+                id: user.id
             }
         });
 
