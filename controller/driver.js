@@ -150,10 +150,10 @@ const resendOtpDriver = async (req, res) => {
 
 const driverStatus = async (req, res) => {
     try {
-        const { flag, id } = req.body;
+        const { flag, mobileNumber } = req.body;
         const driver = await prisma.driver.updateMany({
             where: {
-                id
+                mobileNumber
             },
             data:{
                 flag
