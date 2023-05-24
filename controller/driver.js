@@ -71,7 +71,7 @@ if(mob){
 };
 
 const driverLogin = async (req, res) => {
-    const { mobileNumber, userType, otp } = req.body;
+    const { mobileNumber, deviceId, otp } = req.body;
     try {
         const driver = await prisma.driver.findFirst({
             where: {
