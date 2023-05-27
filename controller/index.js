@@ -3,7 +3,7 @@ const router = express.Router();
 import { UserRegister, userLogin, resendOtp } from "./user.js"
 import { citiesList, cityById, distanceBetweenCities } from "./cityLocation.js";
 import {driverRegister, driverLogin, resendOtpDriver,driverStatus, driverLocation, imgUploaderDocument} from "./driver.js"
-import { fcmNotification, sendNotification } from "./userNotification.js";
+import { fcmNotification, sendNotification, rideBooking } from "./userNotification.js";
 import auth from "../utils/auth.js";
 
 
@@ -25,6 +25,9 @@ router.post("/distance", auth, distanceBetweenCities);
 router.post("/fcmNotification", auth, fcmNotification);
 
 router.post("/sendNotification", auth, sendNotification);
+
+router.post("/rideBooking", auth, rideBooking);
+
 
 
 

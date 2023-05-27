@@ -33,16 +33,16 @@ const imgUploaderDocument = multer({
 ]);
 
 const driverRegister = async (req, res) => {
-    const { driverName, mobileNumber, address, pincode, city, state, pancard, vehicleRC, vehicle, vehicleNumber, dl, voterId, userType } = req.body;
+    const { driverName, mobileNumber, address, pincode, city, state, pancard, vehicleType, vehicleRC, vehicle, vehicleNumber, dl, voterId, userType } = req.body;
     try {
         const mob = await prisma.driver.findFirst({
-            where:{
+            where: {
                 mobileNumber
             }
         })
-if(mob){
-    return res.status(404).send("Driver already registered");
-}
+        if (mob) {
+            return res.status(404).send("Driver already registered");
+        }
         const otp = generateOTP();
         const newDriver = await prisma.driver.create({
             data: {
@@ -56,6 +56,7 @@ if(mob){
                 vehicleRC,
                 vehicle,
                 vehicleNumber,
+                vehicleType,
                 dl,
                 voterId,
                 userType,
@@ -155,7 +156,7 @@ const driverStatus = async (req, res) => {
             where: {
                 mobileNumber
             },
-            data:{
+            data: {
                 flag
             }
         })
@@ -170,9 +171,9 @@ const driverLocation = async (req, res) => {
         const { mobileNumber, city, state } = req.body;
         const driver = await prisma.driver.updateMany({
             where: {
-               mobileNumber
+                mobileNumber
             },
-            data:{
+            data: {
                 city,
                 state
             }
@@ -183,4 +184,4 @@ const driverLocation = async (req, res) => {
     }
 }
 
-export { driverLogin,driverStatus, driverLocation, driverRegister, resendOtpDriver, imgUploaderDocument };
+export { driverLogin, driverStatus, driverLocation, driverRegister, resendOtpDriver, imgUploaderDocument };

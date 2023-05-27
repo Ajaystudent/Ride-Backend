@@ -23,7 +23,7 @@ model User {
 }
 
 model Driver {
-  id            Int      @id @default(autoincrement())
+  id            Int          @id @default(autoincrement())
   mobileNumber  String?
   driverName    String?
   address       String?
@@ -39,10 +39,17 @@ model Driver {
   userType      String?
   otp           String?
   deviceId      String?
-  flag          Boolean  @default(false)
-  is_active     Boolean  @default(true)
-  is_deleted    Boolean  @default(false)
-  created_at    DateTime @default(now())
+  vehicleType   vehicleType?
+  flag          Boolean      @default(false)
+  is_active     Boolean      @default(true)
+  is_deleted    Boolean      @default(false)
+  created_at    DateTime     @default(now())
+}
+
+enum vehicleType {
+  SEDAN
+  AUTO
+  SUV
 }
 
 model cityLocation {
@@ -53,4 +60,24 @@ model cityLocation {
   is_active  Boolean  @default(true)
   is_deleted Boolean  @default(false)
   created_at DateTime @default(now())
+}
+
+model rideBooking {
+  id              Int            @id @default(autoincrement())
+  userName        String?
+  driverName      String?
+  userMobile      String?
+  driverMobile    String?
+  currentCity     String?
+  destinationCity String?
+  status          bookingStatus?
+  is_active       Boolean        @default(true)
+  is_deleted      Boolean        @default(false)
+  created_at      DateTime       @default(now())
+}
+
+enum bookingStatus {
+  CONFIRMED
+  PENDING
+  CANCELLED
 }
