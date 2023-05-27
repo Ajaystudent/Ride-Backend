@@ -70,6 +70,7 @@ model rideBooking {
   driverMobile    String?
   currentCity     String?
   destinationCity String?
+  travelDate      DateTime?
   status          bookingStatus?
   is_active       Boolean        @default(true)
   is_deleted      Boolean        @default(false)
