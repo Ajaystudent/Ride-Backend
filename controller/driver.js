@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
+import Prisma, { PrismaClient } from "@prisma/client";
 import multer from "multer";
 import path from "path";
 import twilio from "twilio";
@@ -171,11 +171,11 @@ const driverLocation = async (req, res) => {
         const { mobileNumber, city, state } = req.body;
         const driver = await prisma.driver.updateMany({
             where: {
-                mobileNumber
+                mobileNumber: mobileNumber
             },
             data: {
-                city,
-                state
+                city: city,
+                state: state
             }
         })
         return res.status(200).json({ message: 'location updated successfully', data: driver });
@@ -184,4 +184,14 @@ const driverLocation = async (req, res) => {
     }
 }
 
-export { driverLogin, driverStatus, driverLocation, driverRegister, resendOtpDriver, imgUploaderDocument };
+const driverHistory = async (req, res) => {
+    try {
+        const { mobileNumber } = req.params;
+        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where rb."travelDate" < current_date and rb."driverMobile" = ${mobileNumber};`)
+        return res.status(200).json({ message: 'Data fetched successfully', data: data });
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+    }
+}
+
+export { driverLogin, driverHistory, driverStatus, driverLocation, driverRegister, resendOtpDriver, imgUploaderDocument };

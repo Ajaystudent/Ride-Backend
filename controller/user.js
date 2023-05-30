@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { PrismaClient } from "@prisma/client";
+import Prisma, { PrismaClient } from "@prisma/client";
 import twilio from "twilio";
 
 const prisma = new PrismaClient();
@@ -133,4 +133,14 @@ const resendOtp = async (req, res) => {
     }
 }
 
-export { userLogin, UserRegister, resendOtp };
+const userHistory = async (req, res) => {
+    try {
+        const { mobileNumber } = req.params;
+        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where rb."travelDate" < current_date and rb."userMobile" = ${mobileNumber};`)
+        return res.status(200).json({ message: 'Data fetched successfully', data: data });
+    } catch (error) {
+        console.error('Error sending OTP:', error);
+    }
+}
+
+export { userLogin, userHistory, UserRegister, resendOtp };
