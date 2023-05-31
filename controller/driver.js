@@ -187,11 +187,42 @@ const driverLocation = async (req, res) => {
 const driverHistory = async (req, res) => {
     try {
         const { mobileNumber } = req.params;
-        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where rb."travelDate" < current_date and rb."driverMobile" = ${mobileNumber};`)
+        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where  rb."driverMobile" = ${mobileNumber} or rb."rideCompleted"  = true and rb."travelDate" <= current_date ;`)
         return res.status(200).json({ message: 'Data fetched successfully', data: data });
     } catch (error) {
-        console.error('Error sending OTP:', error);
+        console.error('Error:', error);
     }
 }
 
-export { driverLogin, driverHistory, driverStatus, driverLocation, driverRegister, resendOtpDriver, imgUploaderDocument };
+const driverUpcoming = async (req, res) => {
+    try {
+        const { mobileNumber } = req.params;
+        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where rb.status = 'CONFIRMED' and rb."driverMobile" = ${mobileNumber} and rb."rideCompleted"  = false and rb."travelDate" >= current_date ;`)
+        return res.status(200).json({ message: 'Data fetched successfully', data: data });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+const rideCompleted = async (req, res) => {
+    try {
+        const { status, userMobile, driverMobile, travelDate } = req.body;
+        let date = new Date(travelDate);
+        const data = await prisma.rideBooking.updateMany({
+            where: {
+                status: "CONFIRMED",
+                userMobile: userMobile,
+                driverMobile: driverMobile,
+                travelDate: date
+            },
+            data: {
+                rideCompleted: status
+            }
+        })
+        return res.status(200).json({ message: 'Data updated successfully', data: data });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+export { driverLogin, driverHistory, rideCompleted, driverUpcoming, driverStatus, driverLocation, driverRegister, resendOtpDriver, imgUploaderDocument };

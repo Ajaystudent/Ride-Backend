@@ -71,6 +71,7 @@ model rideBooking {
   currentCity     String?
   destinationCity String?
   travelDate      DateTime?
+  rideCompleted   Boolean?       @default(false)
   status          bookingStatus?
   is_active       Boolean        @default(true)
   is_deleted      Boolean        @default(false)

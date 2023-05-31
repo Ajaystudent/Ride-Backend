@@ -136,11 +136,21 @@ const resendOtp = async (req, res) => {
 const userHistory = async (req, res) => {
     try {
         const { mobileNumber } = req.params;
-        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where rb."travelDate" < current_date and rb."userMobile" = ${mobileNumber};`)
+        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where  rb."userMobile" = ${mobileNumber} or rb."rideCompleted"  = true and rb."travelDate" <= current_date ;`)
         return res.status(200).json({ message: 'Data fetched successfully', data: data });
     } catch (error) {
         console.error('Error sending OTP:', error);
     }
 }
 
-export { userLogin, userHistory, UserRegister, resendOtp };
+const userUpcoming = async (req, res) => {
+    try {
+        const { mobileNumber } = req.params;
+        const data = await prisma.$queryRaw(Prisma.sql`select * from "rideBooking" rb where rb.status = 'CONFIRMED' and rb."userMobile" = ${mobileNumber} and rb."rideCompleted"  = false and rb."travelDate" >= current_date ;`)
+        return res.status(200).json({ message: 'Data fetched successfully', data: data });
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}
+
+export { userLogin, userHistory, userUpcoming, UserRegister, resendOtp };
