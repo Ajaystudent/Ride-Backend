@@ -40,6 +40,10 @@ model Driver {
   otp           String?
   deviceId      String?
   vehicleType   vehicleType?
+  currentCity   String?
+  destination   String?
+  seats         Int?
+  pickupTime    DateTime?
   flag          Boolean      @default(false)
   is_active     Boolean      @default(true)
   is_deleted    Boolean      @default(false)
@@ -71,6 +75,7 @@ model rideBooking {
   currentCity     String?
   destinationCity String?
   travelDate      DateTime?
+  pickupTime      DateTime?
   rideCompleted   Boolean?       @default(false)
   status          bookingStatus?
   is_active       Boolean        @default(true)

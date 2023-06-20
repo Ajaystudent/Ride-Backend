@@ -57,6 +57,7 @@ const driverRegister = async (req, res) => {
                 vehicle,
                 vehicleNumber,
                 vehicleType,
+                seats,
                 dl,
                 voterId,
                 userType,
@@ -168,14 +169,20 @@ const driverStatus = async (req, res) => {
 
 const driverLocation = async (req, res) => {
     try {
-        const { mobileNumber, city, state } = req.body;
+        const { mobileNumber, pickupTime, currentCity, destination } = req.body;
+        const date = new Date(pickupTime);
+        date.setMinutes(date.getMinutes() - date.getTimezoneOffset()); // Adjust timezone offset to 0
+        const utcDate = date.toISOString();
+        console.log(utcDate);
+        console.log(date);
         const driver = await prisma.driver.updateMany({
             where: {
                 mobileNumber: mobileNumber
             },
             data: {
-                city: city,
-                state: state
+                currentCity: currentCity,
+                destination: destination,
+                pickupTime: utcDate
             }
         })
         return res.status(200).json({ message: 'location updated successfully', data: driver });

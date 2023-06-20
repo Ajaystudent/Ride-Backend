@@ -91,7 +91,7 @@ const sendNotification = async (req, res) => {
 
 const rideBooking = async (req, res) => {
     try {
-        const { userMobile, driverMobile, currentCity, destinationCity, travelDate,status } = req.body;
+        const { userMobile, driverMobile, currentCity, pickupTime, destinationCity, travelDate,status } = req.body;
         const driver = await prisma.driver.findMany({
             where: {
                 mobileNumber: driverMobile
@@ -103,6 +103,7 @@ const rideBooking = async (req, res) => {
             }
         })
         const date = new Date(travelDate)
+        const pickup = new Date(pickupTime);
         const booking = await prisma.rideBooking.create({
             data:{
                 userMobile:userMobile,
@@ -112,6 +113,7 @@ const rideBooking = async (req, res) => {
                 currentCity:currentCity,
                 destinationCity:destinationCity,
                 travelDate:date,
+                pickupTime:pickup,
                 status:status
             }
         })

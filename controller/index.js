@@ -6,6 +6,8 @@ import {driverRegister, driverLogin, rideCompleted, driverUpcoming, resendOtpDri
 import { fcmNotification, sendNotification,   rideBooking } from "./userNotification.js";
 import auth from "../utils/auth.js";
 
+import {searchDrivers} from "./rideSearch.js"
+
 
 router.post("/register", UserRegister);
 router.post("/login", userLogin);
@@ -34,6 +36,9 @@ router.post("/fcmNotification", auth, fcmNotification);
 router.post("/sendNotification", auth, sendNotification);
 
 router.post("/rideBooking", auth, rideBooking);
+
+router.post("/searchDrivers", auth, searchDrivers);
+
 
 
 
