@@ -15,9 +15,8 @@ const searchDrivers = async (req, res) => {
                   WHERE d."currentCity" = ${currentCity}
                     AND d.destination = ${destination}
                     AND d."pickupTime" BETWEEN (${pickup}::timestamp - INTERVAL '30 minutes') AND (${pickup}::timestamp + INTERVAL '30 minutes')
-                    AND d.seats > ${seats}`
+                    AND d.seats > ${seats-1}`
       );
-  
       res.status(200).json({ message: 'Successfully sent with response', data: driverList });
     } catch (err) {
       console.error(err);
