@@ -33,8 +33,9 @@ const imgUploaderDocument = multer({
 ]);
 
 const driverRegister = async (req, res) => {
-    const { driverName, mobileNumber, address, pincode, city, state, pancard, vehicleType, vehicleRC, vehicle, vehicleNumber, dl, voterId, userType } = req.body;
     try {
+        let { driverName, mobileNumber, address, pincode, city, state, seats, pancard, vehicleType, vehicleRC, vehicle, vehicleNumber, dl, voterId, userType } = req.body;
+       seats = parseInt(seats);
         const mob = await prisma.driver.findFirst({
             where: {
                 mobileNumber
