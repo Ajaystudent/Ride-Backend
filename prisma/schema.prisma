@@ -52,7 +52,7 @@ model Driver {
 
 enum vehicleType {
   SEDAN
-  AUTO
+  ANY
   SUV
 }
 
